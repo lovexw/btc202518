@@ -578,17 +578,32 @@ body::before {
         height: 200px;
     }
     
-    .celebration-title {
-        font-size: 2rem;
-    }
-    
-    .celebration-message {
-        font-size: 1.2rem;
+    .celebration-overlay {
+        padding: 10px;
     }
     
     .celebration-content {
-        padding: 2rem 1.5rem;
-        margin: 0 15px;
+        padding: 1.5rem;
+        margin: 0;
+        max-width: 95%;
+    }
+    
+    .celebration-icon {
+        font-size: 2.5rem;
+    }
+    
+    .celebration-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .celebration-message {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .celebration-time {
+        font-size: 0.8rem;
     }
 }
 
@@ -606,6 +621,19 @@ body::before {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
+    }
+    
+    .celebration-content {
+        padding: 2rem;
+        max-width: 80%;
+    }
+    
+    .celebration-title {
+        font-size: 2rem;
+    }
+    
+    .celebration-message {
+        font-size: 1.1rem;
     }
 }
 
@@ -819,6 +847,126 @@ body::before {
     100% {
         transform: translateY(100vh) rotate(360deg);
         opacity: 0;
+    }
+}
+
+/* 年度价格新高记录样式 */
+.highs-section {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 25px;
+    padding: 30px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+.highs-section h3 {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    color: #a8b2d1;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.highs-list {
+    display: grid;
+    gap: 15px;
+}
+
+.high-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.high-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #feca57, #ff9ff3);
+}
+
+.high-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.high-date {
+    font-size: 1rem;
+    color: #a8b2d1;
+    font-weight: 500;
+}
+
+.high-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #feca57, #ff9ff3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.no-highs {
+    text-align: center;
+    color: #a8b2d1;
+    font-size: 1.1rem;
+    padding: 40px;
+    opacity: 0.7;
+}
+
+/* 移动端新高记录适配 */
+@media (max-width: 768px) {
+    .highs-section {
+        padding: 20px 15px;
+        border-radius: 20px;
+    }
+    
+    .highs-section h3 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+    
+    .high-item {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .high-date {
+        font-size: 0.9rem;
+    }
+    
+    .high-price {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .highs-section {
+        padding: 15px 10px;
+    }
+    
+    .highs-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .high-item {
+        padding: 12px;
     }
 }
 

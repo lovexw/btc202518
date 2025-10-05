@@ -9,10 +9,13 @@ let currentPrice = 0;
 let priceChart = null;
 let historicalData = [];
 let achievementRecorded = false; // 记录是否已经达到目标
+let annualHighs = []; // 年度价格新高记录
+let currentYearHigh = 0; // 当前年度最高价
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
     createParticles();
+    loadAnnualHighs(); // 加载年度新高记录
     loadHistoricalData().then(() => {
         initializeChart();
         updateData();
@@ -73,6 +76,9 @@ async function updateData() {
         showCelebration();
         achievementRecorded = true;
     }
+    
+    // 检查并更新年度新高记录
+    checkAndUpdateAnnualHighs(currentPrice);
     
     // 更新界面
     updatePriceDisplay(currentPrice, priceChange);
@@ -465,6 +471,110 @@ function playCelebrationSound() {
     } catch (error) {
         console.log('音效播放失败，继续静默模式');
     }
+}
+
+// 年度价格新高记录功能
+function loadAnnualHighs() {
+    const savedHighs = localStorage.getItem('bitcoinAnnualHighs2025');
+    if (savedHighs) {
+        annualHighs = JSON.parse(savedHighs);
+        currentYearHigh = Math.max(...annualHighs.map(h => h.price), 0);
+        updateHighsDisplay();
+    }
+}
+
+function saveAnnualHighs() {
+    localStorage.setItem('bitcoinAnnualHighs2025', JSON.stringify(annualHighs));
+}
+
+function checkAndUpdateAnnualHighs(currentPrice) {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    
+    // 只记录2025年的新高
+    if (currentYear !== 2025) return;
+    
+    // 检查是否是新年度新高
+    if (currentPrice > currentYearHigh) {
+        currentYearHigh = currentPrice;
+        
+        // 添加新高记录
+        annualHighs.push({
+            price: currentPrice,
+            date: now.toISOString(),
+            timestamp: now.getTime()
+        });
+        
+        // 按价格降序排序，保留前10个最高记录
+        annualHighs.sort((a, b) => b.price - a.price);
+        annualHighs = annualHighs.slice(0, 10);
+        
+        // 保存到本地存储
+        saveAnnualHighs();
+        
+        // 更新显示
+        updateHighsDisplay();
+        
+        // 显示新高提示（可选）
+        showNewHighNotification(currentPrice);
+    }
+}
+
+function updateHighsDisplay() {
+    const highsList = document.getElementById('highsList');
+    
+    if (annualHighs.length === 0) {
+        highsList.innerHTML = '<div class="no-highs">暂无新高记录</div>';
+        return;
+    }
+    
+    highsList.innerHTML = annualHighs.map(high => `
+        <div class="high-item">
+            <div class="high-date">${formatDate(new Date(high.date))}</div>
+            <div class="high-price">${formatCurrency(high.price)}</div>
+        </div>
+    `).join('');
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function showNewHighNotification(price) {
+    // 创建临时通知效果
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #feca57, #ff9ff3);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(254, 202, 87, 0.5);
+        z-index: 1000;
+        font-weight: bold;
+        animation: slideInRight 0.5s ease-out;
+    `;
+    notification.textContent = `🎉 2025年新高！${formatCurrency(price)}`;
+    
+    document.body.appendChild(notification);
+    
+    // 3秒后自动移除
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.5s ease-in';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 500);
+    }, 3000);
 }
 
 // 工具函数：数字格式化
