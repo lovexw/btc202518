@@ -1,4 +1,4 @@
-// 配置
+    // 配置
 const TARGET_PRICE = 180000;
 const TARGET_DATE = new Date('2025-12-31');
 const START_DATE = new Date('2024-12-31');
@@ -8,6 +8,7 @@ const UPDATE_INTERVAL = 30000; // 30秒更新一次
 let currentPrice = 0;
 let priceChart = null;
 let historicalData = [];
+let achievementRecorded = false; // 记录是否已经达到目标
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
@@ -66,6 +67,12 @@ async function updateData() {
 
     currentPrice = priceData.price;
     const priceChange = priceData.change;
+    
+    // 检查是否达到目标价格
+    if (currentPrice >= TARGET_PRICE && !achievementRecorded) {
+        showCelebration();
+        achievementRecorded = true;
+    }
     
     // 更新界面
     updatePriceDisplay(currentPrice, priceChange);
@@ -382,6 +389,81 @@ function createParticles() {
         particle.style.animationDuration = `${Math.random() * 3 + 4}s`;
         
         particlesContainer.appendChild(particle);
+    }
+}
+
+// 显示庆祝动画
+function showCelebration() {
+    const overlay = document.getElementById('celebrationOverlay');
+    const achievementTime = document.getElementById('achievementTime');
+    const confettiContainer = document.getElementById('confetti');
+    
+    // 记录达成时间
+    const now = new Date();
+    achievementTime.textContent = `达成时间: ${now.toLocaleString('zh-CN')}`;
+    
+    // 创建彩色纸屑效果
+    createConfetti(confettiContainer);
+    
+    // 显示庆祝动画
+    overlay.classList.remove('hidden');
+    
+    // 添加庆祝状态样式
+    document.body.classList.add('celebration-active');
+    
+    // 播放庆祝音效（可选）
+    playCelebrationSound();
+}
+
+// 创建彩色纸屑效果
+function createConfetti(container) {
+    container.innerHTML = '';
+    const confettiCount = 100;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        
+        // 随机位置
+        confetti.style.left = `${Math.random() * 100}%`;
+        
+        // 随机大小
+        const size = Math.random() * 8 + 4;
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        
+        // 随机旋转
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        
+        // 随机动画延迟
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        
+        container.appendChild(confetti);
+    }
+}
+
+// 播放庆祝音效
+function playCelebrationSound() {
+    // 创建简单的音效（可选）
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+    } catch (error) {
+        console.log('音效播放失败，继续静默模式');
     }
 }
 
