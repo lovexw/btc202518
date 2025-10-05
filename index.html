@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比特币价格预测 - 小吴预测18万美元</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">比特币价格预测追踪</h1>
+            <p class="subtitle">小吴预测：2025年12月31日前比特币将达到18万美元</p>
+        </header>
+
+        <main class="main-content">
+            <div class="price-card">
+                <div class="price-section">
+                    <div class="current-price">
+                        <h3>当前比特币价格</h3>
+                        <div class="price-display" id="currentPrice">--</div>
+                        <div class="price-change" id="priceChange">--</div>
+                    </div>
+                    
+                    <div class="target-price">
+                        <h3>预测目标价格</h3>
+                        <div class="price-display target">$180,000</div>
+                        <div class="deadline">截止日期: 2025-12-31</div>
+                    </div>
+                </div>
+
+                <div class="difference-section">
+                    <h3>距离目标差距</h3>
+                    <div class="difference-display" id="priceDifference">--</div>
+                    <div class="percentage" id="completionPercentage">--</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>剩余天数</h4>
+                    <div class="stat-value" id="daysRemaining">--</div>
+                </div>
+                <div class="stat-card">
+                    <h4>日均涨幅需求</h4>
+                    <div class="stat-value" id="dailyGrowthRequired">--</div>
+                </div>
+                <div class="stat-card">
+                    <h4>当前完成度</h4>
+                    <div class="stat-value" id="completionRate">--</div>
+                </div>
+                <div class="stat-card">
+                    <h4>预测可信度</h4>
+                    <div class="stat-value">高</div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h3>比特币价格走势（2024年12月 - 2025年12月）</h3>
+                <div class="chart-container">
+                    <canvas id="priceChart"></canvas>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-color historical"></span>
+                        <span>历史价格（每月最高价）</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color predicted"></span>
+                        <span>预测路径（虚线）</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color target"></span>
+                        <span>目标价格线</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>数据更新于: <span id="lastUpdate">--</span></p>
+            <p>数据来源: CoinGecko API</p>
+        </footer>
+    </div>
+
+    <div class="particles" id="particles"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

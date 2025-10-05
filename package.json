@@ -1,0 +1,13 @@
+{
+  "name": "bitcoin-price-prediction",
+  "version": "1.0.0",
+  "description": "比特币价格预测展示页面 - 小吴预测18万美元",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Static site - no build required'"
+  },
+  "keywords": ["bitcoin", "prediction", "crypto", "dashboard"],
+  "author": "小吴",
+  "license": "MIT"
+}
